@@ -33,6 +33,7 @@ RUN chmod +x bitaxeluck-agent.py
 # Environment variables (to be overridden at runtime)
 ENV BITAXE_IP=""
 ENV BITAXELUCK_TOKEN=""
+ENV MINER_NAMES=""
 ENV INTERVAL="10"
 ENV VERBOSE=""
 
@@ -45,4 +46,5 @@ CMD python3 bitaxeluck-agent.py \
     --bitaxe-ip ${BITAXE_IP} \
     --token ${BITAXELUCK_TOKEN} \
     --interval ${INTERVAL} \
+    ${MINER_NAMES:+--miner-names "${MINER_NAMES}"} \
     ${VERBOSE:+--verbose}

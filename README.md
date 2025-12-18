@@ -71,6 +71,7 @@ nohup python3 bitaxeluck-agent.py --bitaxe-ip 192.168.1.50,192.168.1.51 --token 
 |--------|-------------|---------|
 | `--bitaxe-ip` | BitAxe IP address(es), comma-separated | Required |
 | `--token` | Your BitAxeLuck API token | Required |
+| `--miner-names` | Custom names for miners (comma-separated, same order as IPs) | BitAxe hostname |
 | `--interval` | Seconds between readings | 10 |
 | `--verbose` | Enable debug logging | False |
 
@@ -155,6 +156,7 @@ telegraf --config telegraf.conf
 |----------|-------------|----------|
 | `BITAXE_IP` | IP address(es) of your BitAxe (comma-separated) | Yes |
 | `BITAXELUCK_TOKEN` | Your API token from bitaxeluck.com | Yes |
+| `MINER_NAMES` | Custom names for miners (comma-separated, same order as IPs) | No |
 | `INTERVAL` | Polling interval in seconds | No (default: 10) |
 | `VERBOSE` | Enable debug output ("1" to enable) | No |
 
@@ -182,14 +184,21 @@ The agent supports monitoring multiple BitAxe miners with a single instance:
 ```bash
 # Python - comma-separated IPs
 python3 bitaxeluck-agent.py \
-  --bitaxe-ip 192.168.1.50,192.168.1.51,192.168.1.52,192.168.1.53 \
+  --bitaxe-ip 192.168.1.50,192.168.1.51,192.168.1.52 \
+  --token YOUR_TOKEN
+
+# With custom names (recommended for easy identification)
+python3 bitaxeluck-agent.py \
+  --bitaxe-ip 192.168.1.50,192.168.1.51,192.168.1.52 \
+  --miner-names "Garage,Office,Bedroom" \
   --token YOUR_TOKEN
 
 # Docker - same approach
 docker run -d --network host \
   -e BITAXE_IP=192.168.1.50,192.168.1.51,192.168.1.52 \
+  -e MINER_NAMES=Garage,Office,Bedroom \
   -e BITAXELUCK_TOKEN=your_token \
-  bitaxeluck-agent
+  ghcr.io/bitaxeluck/agent:latest
 ```
 
 **Output example:**
@@ -198,17 +207,17 @@ docker run -d --network host \
 ║                    BitAxeLuck Agent                          ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Monitoring: 3 miners                                        ║
-║    1. 192.168.1.50                                           ║
-║    2. 192.168.1.51                                           ║
-║    3. 192.168.1.52                                           ║
+║    1. 192.168.1.50 (Garage)                                  ║
+║    2. 192.168.1.51 (Office)                                  ║
+║    3. 192.168.1.52 (Bedroom)                                 ║
 ║  Interval:  10 seconds                                       ║
 ║  Target:    influx.bitaxeluck.com                           ║
 ╚══════════════════════════════════════════════════════════════╝
 
 [INFO] Starting metrics collection... (Ctrl+C to stop)
-[14:32:15] bitaxe-office: 523.4 GH/s | 54.2°C
-[14:32:15] bitaxe-garage: 498.1 GH/s | 51.8°C
-[14:32:15] bitaxe-bedroom: 510.7 GH/s | 53.0°C
+[14:32:15] Garage: 523.4 GH/s | 54.2°C
+[14:32:15] Office: 498.1 GH/s | 51.8°C
+[14:32:15] Bedroom: 510.7 GH/s | 53.0°C
 [14:32:15] Summary: 3/3 miners reporting
 ```
 
