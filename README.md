@@ -308,12 +308,53 @@ sudo systemctl start bitaxeluck-agent
 
 ---
 
+## Stratum Audit Tool
+
+Verify any solo mining pool's Stratum protocol independently. This tool connects to a pool and analyzes:
+
+- Protocol compliance (Stratum v1)
+- Coinbase structure and pool tag
+- Difficulty settings
+- Work distribution
+
+### Usage
+
+```bash
+# Download the script
+curl -O https://raw.githubusercontent.com/bitaxeluck/bitaxeluck/main/stratum_audit.py
+
+# Audit pool.bitaxeluck.com
+python3 stratum_audit.py --host stratum.bitaxeluck.com --port 3334
+
+# Compare with solo.ckpool.org
+python3 stratum_audit.py --host solo.ckpool.org --port 3333
+```
+
+### Output Files
+
+| File | Description |
+|------|-------------|
+| `pool_audit.json` | Full audit data in JSON format |
+| `pool_audit.md` | Human-readable audit report |
+| `risk_assessment.md` | Risk analysis and recommendations |
+
+### Requirements
+
+- Python 3.6+
+- No external dependencies (uses only stdlib)
+
+For more details, see the [Technical Audit page](https://pool.bitaxeluck.com/audit/).
+
+---
+
 ## Links
 
 - **Website**: [bitaxeluck.com](https://bitaxeluck.com)
 - **Dashboard**: [bitaxeluck.com/dashboard](https://bitaxeluck.com/dashboard)
 - **Setup Guide**: [bitaxeluck.com/setup](https://bitaxeluck.com/setup)
 - **Calculator**: [bitaxeluck.com/calculator](https://bitaxeluck.com/calculator)
+- **Pool**: [pool.bitaxeluck.com](https://pool.bitaxeluck.com)
+- **Pool Audit**: [pool.bitaxeluck.com/audit](https://pool.bitaxeluck.com/audit/)
 - **Twitter/X**: [@bitaxeluck](https://x.com/bitaxeluck)
 
 ---
