@@ -1,0 +1,64 @@
+# =============================================================================
+# BitAxeLuck Agent - Docker Compose
+# =============================================================================
+#
+# QUICK START (only this file needed!):
+#   1. Download: curl -O https://raw.githubusercontent.com/bitaxeluck/bitaxeluck/main/docker-compose.yml
+#   2. Edit BITAXE_IP and BITAXELUCK_TOKEN below
+#   3. Run: docker compose up -d
+#
+# The image is automatically downloaded from GitHub Container Registry.
+# No other files (Python script, Dockerfile) are needed.
+#
+# =============================================================================
+
+version: '3.8'
+
+services:
+  bitaxeluck-agent:
+    # Pre-built image from GitHub Container Registry (auto-downloaded)
+    image: ghcr.io/bitaxeluck/agent:latest
+    container_name: bitaxeluck-agent
+
+    environment:
+      # =========================================================================
+      # REQUIRED: Your BitAxe's local IP address(es)
+      # =========================================================================
+      # Single miner:
+      - BITAXE_IP=192.168.1.50
+      # Multiple miners (comma-separated):
+      # - BITAXE_IP=192.168.1.50,192.168.1.51,192.168.1.52
+
+      # =========================================================================
+      # REQUIRED: Your BitAxeLuck API token
+      # =========================================================================
+      # Get your free token at: https://bitaxeluck.com/setup
+      - BITAXELUCK_TOKEN=your_token_here
+
+      # =========================================================================
+      # OPTIONAL settings
+      # =========================================================================
+      # Custom names for each miner (comma-separated, same order as IPs)
+      # Example: If BITAXE_IP=192.168.1.50,192.168.1.51 then MINER_NAMES=Garage,Office
+      # If not set, uses the hostname from BitAxe firmware
+      - MINER_NAMES=
+      # Polling interval in seconds (default: 10)
+      - INTERVAL=10
+      # Enable verbose/debug output (set to "1" to enable)
+      - VERBOSE=
+
+    # Use host network to access BitAxe on your local network
+    network_mode: host
+    restart: unless-stopped
+
+# =============================================================================
+# LOCAL BUILD (for developers only)
+# =============================================================================
+# If you want to build locally instead of using the pre-built image:
+#   1. Clone repo: git clone https://github.com/bitaxeluck/bitaxeluck.git
+#   2. cd bitaxeluck
+#   3. Uncomment "build: ." below and comment out the "image:" line above
+#   4. Run: docker compose up -d --build
+#
+#     build: .
+# =============================================================================
